@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public float speed = 1f;
+    public float jumpForce = 150f;
+
     private Rigidbody2D Rigidbody2D;
     private float horizontal;
     void Start()
@@ -16,13 +19,19 @@ public class PlayerMovement : MonoBehaviour
     {
         horizontal = Input.GetAxisRaw("Horizontal");
 
-        //Vector2 direcHorizontal = new Vector2(horizontal, 0);
-        //Vector2 direcVertical = new Vector2(0, vertical);
-
-        //transform.Translate(horizontal, 0, 0);
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            Jump();
+        }
     }
+
+    private void Jump()
+    {
+        Rigidbody2D.AddForce(Vector2.up * jumpForce);
+    }
+
     private void FixedUpdate()
     {
-        Rigidbody2D.velocity = new Vector2(horizontal, Rigidbody2D.velocity.y);
+        Rigidbody2D.velocity = new Vector2(horizontal, Rigidbody2D.velocity.y) * speed;
     }
 }
