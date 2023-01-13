@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public GameObject bulletPrefab;
     public float speed = 1f;
     public float jumpForce = 150f;
 
@@ -11,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     private float horizontal;
     private bool grounded;
     private Animator animator;
+    private float lastShoot;
 
     void Start()
     {
@@ -48,15 +50,37 @@ public class PlayerMovement : MonoBehaviour
         //else
         //    grounded = false;
 
+        //----------------Saltar--------------------
         if (Input.GetKeyDown(KeyCode.W) && grounded)
         {
             Jump();
+        }
+
+        //----------------Disparar------------------
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time > lastShoot + 0.25f)
+        {
+            Shoot();
+            lastShoot = Time.time;
         }
     }
 
     private void Jump()
     {
         Rigidbody2D.AddForce(Vector2.up * jumpForce);
+    }
+
+    private void Shoot()
+    {
+        //obtengo la direccion
+        Vector3 direction;
+        if (transform.localScale.x == 1f) //derecha
+            direction = Vector3.right;
+        else 
+            direction = Vector3.left; //Izquierda
+
+        GameObject bullet = Instantiate(bulletPrefab, transform.position + (direction * 0.1f), Quaternion.identity);
+        
+        bullet.GetComponent<BulletScript>().SetDirection(direction);
     }
 
     private void FixedUpdate()
