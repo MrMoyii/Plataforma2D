@@ -9,6 +9,8 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody2D Rigidbody2D;
     private float horizontal;
+    private bool grounded;
+
     void Start()
     {
         Rigidbody2D = GetComponent<Rigidbody2D>();
@@ -19,7 +21,17 @@ public class PlayerMovement : MonoBehaviour
     {
         horizontal = Input.GetAxisRaw("Horizontal");
 
-        if (Input.GetKeyDown(KeyCode.W))
+        Debug.DrawRay(transform.position, Vector2.down * 0.1f, Color.red);
+        if (Physics2D.Raycast(transform.position, Vector2.down, 0.1f))
+        {
+            grounded = true;
+        }
+        else
+        {
+            grounded = false;
+        }
+
+        if (Input.GetKeyDown(KeyCode.W) && grounded)
         {
             Jump();
         }
