@@ -24,6 +24,17 @@ public class PlayerMovement : MonoBehaviour
         //obtenener el valor de la direccion de movimiento
         horizontal = Input.GetAxisRaw("Horizontal");
 
+
+        //------------Rotacion---------
+        if (horizontal < 0.0f)
+        {
+            transform.localScale = new Vector3(-1.0f,1.0f,1.0f);
+        }
+        else if (horizontal > 0.0f)
+        {
+            transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+        }
+
         //Animacion cuando se mueve
         animator.SetBool("running", horizontal != 0.0f);
 
